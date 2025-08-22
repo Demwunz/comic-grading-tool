@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Book Grading Tool</title>
+    <!-- Use Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Set Inter font for a clean look -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4d6;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .message-box {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 2rem;
+            z-index: 1000;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 relative">
+
+    <!-- Cheatsheet Drawer Container -->
+    <div id="cheatsheet-drawer" class="fixed top-0 left-0 w-80 h-full bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-700">Comic Grading Cheatsheet</h2>
+            <button id="close-drawer-btn" class="text-gray-500 hover:text-gray-800 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="cheatsheet-container" class="space-y-4">
+            <!-- Cheatsheet content will be dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Backdrop Overlay -->
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black z-40 hidden transition-opacity duration-300 ease-in-out"></div>
+
+    <!-- Main application container -->
+    <div class="container bg-white shadow-xl rounded-2xl p-6 md:p-12 space-y-8 relative">
+        
+        <!-- Header Section with Menu and Title -->
+        <div class="flex items-center gap-4">
+            <!-- Hamburger Menu Button -->
+            <button id="open-drawer-btn" class="text-gray-800 hover:text-blue-600 focus:outline-none z-30">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+            <div class="flex flex-col">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 text-left">Comic Book Grading Tool</h1>
+                <p class="text-left text-gray-500 text-lg">
+                    Use this tool to determine the approximate grade of your comic book.
+                </p>
+            </div>
+        </div>
+
+        <!-- Grade Result Display aligned to the left -->
+        <div class="flex justify-start items-center gap-4">
+            <div id="result-display" class="w-48 h-48 bg-blue-600 rounded-lg shadow-xl border-4 border-white flex-shrink-0 flex flex-col items-center justify-center text-center">
+                <p id="final-grade" class="text-7xl font-extrabold text-white">10.0</p>
+                <p id="final-grade-note" class="text-white text-sm mt-2">Gem Mint</p>
+            </div>
+            <div id="grade-details" class="flex-grow text-gray-700 p-4 rounded-md">
+                <p><strong>Point Deductions:</strong> <span id="details-deductions">0.0-0.1</span></p>
+                <p><strong>Defects:</strong> <span id="details-defects">Slight imperfections</span></p>
+                <p><strong>Creasing:</strong> <span id="details-creasing">Negligible</span></p>
+                <p><strong>Wear:</strong> <span id="details-wear">Negligible</span></p>
+                <p><strong>Gloss:</strong> <span id="details-gloss">High Gloss</span></p>
+                <p><strong>Interior:</strong> <span id="details-interior">White Pages</span></p>
+            </div>
+        </div>
+        
+        <!-- Grading Input Form -->
+        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+            <div class="flex border-b border-gray-300">
+                <button id="tab-wear" class="py-2 px-4 font-semibold text-blue-600 border-b-2 border-blue-600 focus:outline-none">Wear</button>
+                <button id="tab-defects" class="py-2 px-4 font-semibold text-gray-500 focus:outline-none">Defects</button>
+            </div>
+            
+            <!-- Wear Tab Content -->
+            <div id="wear-content" class="pt-4">
+                <!-- New Guide Section -->
+                <details class="mb-2 text-sm text-gray-600 rounded-md">
+                    <summary class="font-semibold cursor-pointer text-gray-700">Basic Guidelines</summary>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li><strong>Negligible:</strong> Can only be seen with magnification.</li>
+                        <li><strong>Tiny:</strong> Can barely be seen but is obvious with magnification.</li>
+                        <li><strong>Minor:</strong> Obvious but very minor and does not significantly detract from the appeal.</li>
+                        <li><strong>Moderate:</strong> Obvious and detracts from the presentation/appeal of the book.</li>
+                        <li><strong>Extensive:</strong> Damage is too bad to be considered moderate but not bad enough to be major.</li>
+                        <li><strong>Major:</strong> Unsightly and significantly impacts the presentation/appeal/readability.</li>
+                    </ul>
+                </details>
+                <hr class="my-4 border-gray-300" />
+
+                <div class="overflow-x-auto">
+                    <table class="w-full table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="px-2 py-2 text-left text-gray-600 font-semibold w-1/4">Area</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Negligible</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Tiny</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Minor</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Moderate</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Extensive</th>
+                                <th class="px-2 py-2 text-center text-gray-600 font-semibold w-1/4">Major</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wear-form">
+                            <!-- Rows will be dynamically populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Defects Tab Content (initially hidden) -->
+            <div id="defects-content" class="hidden pt-4">
+                 <div class="overflow-x-auto">
+                    <dl id="defects-dl" class="space-y-4">
+                        <!-- Definition list items for each defect category -->
+                        
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Tears/Splits</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-tears" id="defects-tears">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Up to 1/4 inch</option>
+                                        <option value="1.0">1/4 to 1/2 inch</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.5">1/2 inch to 1 inch</option>
+                                        <option value="2.0">Small tears</option>
+                                        <option value="2.5">Several small tears</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="3.0">Large tears</option>
+                                        <option value="3.5">Many tears</option>
+                                        <option value="4.0">Large missing pieces</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Stains/Water Damage</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-stains" id="defects-stains">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Light foxing</option>
+                                        <option value="1.0">Light water stain</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.5">Moderate stain</option>
+                                        <option value="2.0">Heavy stain</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="3.0">Extensive staining</option>
+                                        <option value="4.0">Heavy moisture damage</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Tape</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-tape" id="defects-tape">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Slightly discolored</option>
+                                        <option value="1.0">Small amount</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.5">Moderate amount</option>
+                                        <option value="2.0">Discolored/Brittle</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="3.0">Extensive amount</option>
+                                        <option value="4.0">Major repairs</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Writing</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-writing" id="defects-writing">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Inconspicuous marking</option>
+                                        <option value="1.0">Date stamp</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.5">Small price mark</option>
+                                        <option value="2.0">Small writing</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="3.0">Large writing</option>
+                                        <option value="4.0">Extensive defacing</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Stamps</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-stamps" id="defects-stamps">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Small stamp</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.0">Small, distracting stamp</option>
+                                        <option value="1.5">Multiple small stamps</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="2.0">Large stamp</option>
+                                        <option value="2.5">Multiple large stamps</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Holes/Punches</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-holes" id="defects-holes">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.0">Small hole</option>
+                                        <option value="1.5">Single punch hole</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="2.0">Large hole</option>
+                                        <option value="3.0">Multiple holes</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Other</dt>
+                            <dd class="w-full md:w-2/3">
+                                <select class="w-full rounded-md p-1 border border-gray-300" name="defects-other" id="defects-other">
+                                    <optgroup label="High Grade">
+                                        <option value="0">None</option>
+                                        <option value="0.5">Slight mis-cut</option>
+                                    </optgroup>
+                                    <optgroup label="Mid Grade">
+                                        <option value="1.0">Subscription crease</option>
+                                        <option value="1.5">Slight foxing</option>
+                                    </optgroup>
+                                    <optgroup label="Low Grade">
+                                        <option value="2.0">Severe mis-cut</option>
+                                        <option value="3.0">Loose staples</option>
+                                    </optgroup>
+                                </select>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Message box for user notifications -->
+    <div id="message-box" class="message-box hidden">
+        <div id="message-content"></div>
+        <button id="close-message-btn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full">
+            Close
+        </button>
+    </div>
+
+    <script>
+        // Data parsed from the "Copy of Improve Collecting Comic Grading Tool - Comic Grading Tool and Cheatsheet.csv" file
+        // Hardcoding this data simplifies the tool and makes it self-contained.
+        const comicData = [
+            { "GRADE": 9.9, "POINT DEDUCTIONS": "0.0-0.1", "DEFECTS": "Slight imperfections", "CREASING": "Negligible", "WEAR": "Negligible", "GLOSS": "High Gloss", "INTERIOR": "White Pages", "NOTES": "Gem Mint" },
+            { "GRADE": 9.8, "POINT DEDUCTIONS": "0.0-0.2", "DEFECTS": "Slight imperfections", "CREASING": "Negligible", "WEAR": "Negligible", "GLOSS": "High Gloss", "INTERIOR": "White Pages", "NOTES": "Near Mint/Mint" },
+            { "GRADE": 9.6, "POINT DEDUCTIONS": "0.0-0.4", "DEFECTS": "Barely noticeable, minor imperfections", "CREASING": "Negligible", "WEAR": "Negligible", "GLOSS": "High Gloss", "INTERIOR": "White to Off-White Pages", "NOTES": "Near Mint+" },
+            { "GRADE": 9.4, "POINT DEDUCTIONS": "0.0-0.6", "DEFECTS": "Minor to barely noticeable imperfections", "CREASING": "Negligible", "WEAR": "Negligible", "GLOSS": "High Gloss", "INTERIOR": "White to Off-White Pages", "NOTES": "Near Mint" },
+            { "GRADE": 9.2, "POINT DEDUCTIONS": "0.0-0.8", "DEFECTS": "Minor but obvious imperfections", "CREASING": "Negligible", "WEAR": "Negligible", "GLOSS": "High Gloss", "INTERIOR": "White to Off-White Pages", "NOTES": "Near Mint-" },
+            { "GRADE": 9.0, "POINT DEDUCTIONS": "0.0-1.0", "DEFECTS": "Minor but obvious imperfections", "CREASING": "Tiny", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "White to Off-White Pages", "NOTES": "Very Fine/Near Mint" },
+            { "GRADE": 8.5, "POINT DEDUCTIONS": "0.0-1.5", "DEFECTS": "Minor but obvious imperfections", "CREASING": "Tiny", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "White to Off-White Pages", "NOTES": "Very Fine+" },
+            { "GRADE": 8.0, "POINT DEDUCTIONS": "0.0-2.0", "DEFECTS": "Minor imperfections", "CREASING": "Tiny", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "Off-White to Slight Tan", "NOTES": "Very Fine" },
+            { "GRADE": 7.5, "POINT DEDUCTIONS": "0.0-2.5", "DEFECTS": "Minor imperfections", "CREASING": "Tiny", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "Off-White to Slight Tan", "NOTES": "Very Fine-" },
+            { "GRADE": 7.0, "POINT DEDUCTIONS": "0.0-3.0", "DEFECTS": "Minor imperfections", "CREASING": "Minor", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "Off-White to Slight Tan", "NOTES": "Fine/Very Fine" },
+            { "GRADE": 6.5, "POINT DEDUCTIONS": "0.0-3.5", "DEFECTS": "Minor imperfections", "CREASING": "Minor", "WEAR": "Minor", "GLOSS": "High Gloss", "INTERIOR": "Off-White to Tan", "NOTES": "Fine+" },
+            { "GRADE": 6.0, "POINT DEDUCTIONS": "0.0-4.0", "DEFECTS": "Minor imperfections", "CREASING": "Minor", "WEAR": "Minor", "GLOSS": "Low Gloss", "INTERIOR": "Off-White to Tan", "NOTES": "Fine" },
+            { "GRADE": 5.5, "POINT DEDUCTIONS": "0.0-4.5", "DEFECTS": "Minor imperfections", "CREASING": "Moderate", "WEAR": "Moderate", "GLOSS": "Low Gloss", "INTERIOR": "Tan", "NOTES": "Fine-" },
+            { "GRADE": 5.0, "POINT DEDUCTIONS": "0.0-5.0", "DEFECTS": "Minor imperfections", "CREASING": "Moderate", "WEAR": "Moderate", "GLOSS": "Low Gloss", "INTERIOR": "Tan", "NOTES": "Very Good/Fine" },
+            { "GRADE": 4.5, "POINT DEDUCTIONS": "0.0-5.5", "DEFECTS": "Minor imperfections", "CREASING": "Moderate", "WEAR": "Moderate", "GLOSS": "Low Gloss", "INTERIOR": "Tan", "NOTES": "Very Good+" },
+            { "GRADE": 4.0, "POINT DEDUCTIONS": "0.0-6.0", "DEFECTS": "Minor to Major", "CREASING": "Moderate", "WEAR": "Moderate", "GLOSS": "Low Gloss", "INTERIOR": "Tan", "NOTES": "Very Good" },
+            { "GRADE": 3.5, "POINT DEDUCTIONS": "0.0-6.5", "DEFECTS": "Minor to Major", "CREASING": "Moderate", "WEAR": "Moderate", "GLOSS": "Low Gloss", "INTERIOR": "Tan", "NOTES": "Very Good-" },
+            { "GRADE": 3.0, "POINT DEDUCTIONS": "0.0-7.0", "DEFECTS": "Major to Extensive", "CREASING": "Major", "WEAR": "Major", "GLOSS": "Low Gloss", "INTERIOR": "Tan to Brown", "NOTES": "Good/Very Good" },
+            { "GRADE": 2.5, "POINT DEDUCTIONS": "0.0-7.5", "DEFECTS": "Major to Extensive", "CREASING": "Major", "WEAR": "Major", "GLOSS": "Low Gloss", "INTERIOR": "Tan to Brown", "NOTES": "Good+" },
+            { "GRADE": 2.0, "POINT DEDUCTIONS": "0.0-8.0", "DEFECTS": "Major to Extensive", "CREASING": "Major", "WEAR": "Major", "GLOSS": "Low Gloss", "INTERIOR": "Brown to Tan", "NOTES": "Good" },
+            { "GRADE": 1.8, "POINT DEDUCTIONS": "0.0-8.2", "DEFECTS": "Major to Extensive", "CREASING": "Major", "WEAR": "Major", "GLOSS": "Low Gloss", "INTERIOR": "Brown to Tan", "NOTES": "Good-" },
+            { "GRADE": 1.5, "POINT DEDUCTIONS": "0.0-8.5", "DEFECTS": "Major to Extensive", "CREASING": "Extensive", "WEAR": "Extensive", "GLOSS": "Low Gloss", "INTERIOR": "Brown to Tan", "NOTES": "Fair/Good" },
+            { "GRADE": 1.0, "POINT DEDUCTIONS": "0.0-9.0", "DEFECTS": "Extensive", "CREASING": "Extensive", "WEAR": "Extensive", "GLOSS": "Low Gloss", "INTERIOR": "Brown to Tan", "NOTES": "Fair" },
+            { "GRADE": 0.5, "POINT DEDUCTIONS": "0.0-9.5", "DEFECTS": "Major", "CREASING": "Major", "WEAR": "Major", "GLOSS": "Low Gloss", "INTERIOR": "Brown to Tan", "NOTES": "Poor" },
+            { "GRADE": 0.3, "POINT DEDUCTIONS": "0.0-9.7", "DEFECTS": "Extensive", "CREASING": "Extensive", "WEAR": "Extensive", "GLOSS": "None", "INTERIOR": "Brown to Brittle", "NOTES": "Poor" }
+        ];
+
+        // Data for defects tab from the CSV file
+        const defectsData = [
+            {
+                category: "Tears/Splits",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Up to 1/4 inch", value: 0.5 },
+                        { text: "1/4 to 1/2 inch", value: 1.0 },
+                    ],
+                    "Mid Grade": [
+                        { text: "1/2 inch to 1 inch", value: 1.5 },
+                        { text: "Small tears", value: 2.0 },
+                        { text: "Several small tears", value: 2.5 },
+                    ],
+                    "Low Grade": [
+                        { text: "Large tears", value: 3.0 },
+                        { text: "Many tears", value: 3.5 },
+                        { text: "Large missing pieces", value: 4.0 },
+                    ],
+                },
+            },
+            {
+                category: "Stains/Water Damage",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Light foxing", value: 0.5 },
+                        { text: "Light water stain", value: 1.0 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Moderate stain", value: 1.5 },
+                        { text: "Heavy stain", value: 2.0 },
+                    ],
+                    "Low Grade": [
+                        { text: "Extensive staining", value: 3.0 },
+                        { text: "Heavy moisture damage", value: 4.0 },
+                    ],
+                },
+            },
+            {
+                category: "Tape",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Slightly discolored", value: 0.5 },
+                        { text: "Small amount", value: 1.0 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Moderate amount", value: 1.5 },
+                        { text: "Discolored/Brittle", value: 2.0 },
+                    ],
+                    "Low Grade": [
+                        { text: "Extensive amount", value: 3.0 },
+                        { text: "Major repairs", value: 4.0 },
+                    ],
+                },
+            },
+            {
+                category: "Writing",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Inconspicuous marking", value: 0.5 },
+                        { text: "Date stamp", value: 1.0 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Small price mark", value: 1.5 },
+                        { text: "Small writing", value: 2.0 },
+                    ],
+                    "Low Grade": [
+                        { text: "Large writing", value: 3.0 },
+                        { text: "Extensive defacing", value: 4.0 },
+                    ],
+                },
+            },
+            {
+                category: "Stamps",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Small stamp", value: 0.5 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Small, distracting stamp", value: 1.0 },
+                        { text: "Multiple small stamps", value: 1.5 },
+                    ],
+                    "Low Grade": [
+                        { text: "Large stamp", value: 2.0 },
+                        { text: "Multiple large stamps", value: 2.5 },
+                    ],
+                },
+            },
+            {
+                category: "Holes/Punches",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Small hole", value: 1.0 },
+                        { text: "Single punch hole", value: 1.5 },
+                    ],
+                    "Low Grade": [
+                        { text: "Large hole", value: 2.0 },
+                        { text: "Multiple holes", value: 3.0 },
+                    ],
+                },
+            },
+            {
+                category: "Other",
+                options: {
+                    "High Grade": [
+                        { text: "None", value: 0 },
+                        { text: "Slight mis-cut", value: 0.5 },
+                    ],
+                    "Mid Grade": [
+                        { text: "Subscription crease", value: 1.0 },
+                        { text: "Slight foxing", value: 1.5 },
+                    ],
+                    "Low Grade": [
+                        { text: "Severe mis-cut", value: 2.0 },
+                        { text: "Loose staples", value: 3.0 },
+                    ],
+                },
+            },
+        ];
+        
+        // Define the comic areas and their corresponding defect levels with point deductions for 'Wear' tab
+        const comicAreasWear = [
+            "Bindery", "Corners", "Edges", "Spine", "Staples", "Cover", "Pages"
+        ];
+        
+        const defectLevels = {
+            "Negligible": 0.0,
+            "Tiny": 0.2,
+            "Minor": 0.5,
+            "Moderate": 1.0,
+            "Extensive": 1.5,
+            "Major": 2.0
+        };
+
+        // DOM elements
+        const defectFormWear = document.getElementById('wear-form');
+        const defectsDl = document.getElementById('defects-dl');
+        const finalGradeEl = document.getElementById('final-grade');
+        const finalGradeNoteEl = document.getElementById('final-grade-note');
+        const detailsDeductionsEl = document.getElementById('details-deductions');
+        const detailsDefectsEl = document.getElementById('details-defects');
+        const detailsCreasingEl = document.getElementById('details-creasing');
+        const detailsWearEl = document.getElementById('details-wear');
+        const detailsGlossEl = document.getElementById('details-gloss');
+        const detailsInteriorEl = document.getElementById('details-interior');
+        const cheatsheetContainer = document.getElementById('cheatsheet-container');
+        const messageBox = document.getElementById('message-box');
+        const messageContent = document.getElementById('message-content');
+        const closeMessageBtn = document.getElementById('close-message-btn');
+        const cheatsheetDrawer = document.getElementById('cheatsheet-drawer');
+        const openDrawerBtn = document.getElementById('open-drawer-btn');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const drawerBackdrop = document.getElementById('drawer-backdrop');
+
+        // Tab elements
+        const tabWear = document.getElementById('tab-wear');
+        const tabDefects = document.getElementById('tab-defects');
+        const wearContent = document.getElementById('wear-content');
+        const defectsContent = document.getElementById('defects-content');
+
+        // Function to display a message box
+        function showMessage(message) {
+            messageContent.innerHTML = message;
+            messageBox.classList.remove('hidden');
+        }
+
+        // Close message box on button click
+        closeMessageBtn.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+        });
+
+        // Function to render the defect selection form with radio buttons for 'Wear' tab
+        function renderWearForm() {
+            comicAreasWear.forEach(area => {
+                const areaRow = document.createElement('tr');
+                areaRow.className = 'border-t border-gray-300';
+                
+                const areaLabel = document.createElement('td');
+                areaLabel.className = 'px-2 py-2 text-left text-gray-700 font-medium';
+                areaLabel.textContent = area;
+                areaRow.appendChild(areaLabel);
+
+                // Create a radio button for each defect level
+                Object.keys(defectLevels).forEach((level, index) => {
+                    const cell = document.createElement('td');
+                    cell.className = 'px-2 py-2 text-center';
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = area.toLowerCase(); // Unique name for each group
+                    radioInput.value = level;
+                    radioInput.className = 'form-radio text-blue-600 focus:ring-blue-500 w-8 h-8';
+                    if (index === 0) {
+                        radioInput.checked = true; // Default to 'Negligible'
+                    }
+
+                    cell.appendChild(radioInput);
+                    areaRow.appendChild(cell);
+                });
+
+                defectFormWear.appendChild(areaRow);
+            });
+            // Add a single change listener to the parent form to improve performance
+            defectFormWear.addEventListener('change', calculateGrade);
+        }
+
+        // Function to render the defect selection form for 'Defects' tab
+        function renderDefectsForm() {
+            // Clear existing content to prevent duplicates
+            defectsDl.innerHTML = '';
+            
+            defectsData.forEach(defectCategory => {
+                const flexDiv = document.createElement('div');
+                flexDiv.className = "flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4";
+
+                const dt = document.createElement('dt');
+                dt.className = 'w-full md:w-1/3 text-gray-600 font-semibold';
+                dt.textContent = defectCategory.category;
+
+                const dd = document.createElement('dd');
+                dd.className = 'w-full md:w-2/3';
+
+                const select = document.createElement('select');
+                select.className = 'w-full rounded-md p-1 border border-gray-300';
+                select.name = `defects-${defectCategory.category.toLowerCase().replace(/[\s\/]/g, '-')}`;
+
+                for (const group in defectCategory.options) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = group;
+                    
+                    defectCategory.options[group].forEach(option => {
+                        const optionEl = document.createElement('option');
+                        optionEl.value = option.value;
+                        optionEl.textContent = option.text;
+                        optgroup.appendChild(optionEl);
+                    });
+                    select.appendChild(optgroup);
+                }
+
+                dd.appendChild(select);
+                flexDiv.appendChild(dt);
+                flexDiv.appendChild(dd);
+                defectsDl.appendChild(flexDiv);
+            });
+             defectsDl.addEventListener('change', calculateGrade);
+        }
+
+        // Function to render the cheatsheet
+        function renderCheatsheet() {
+            cheatsheetContainer.innerHTML = ''; // Clear loading message
+            comicData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Grade: ${item.GRADE} - ${item.NOTES}</h3>
+                    <p class="text-gray-700"><strong>Point Deductions:</strong> ${item["POINT DEDUCTIONS"]}</p>
+                    <p class="text-gray-700"><strong>Defects:</strong> ${item.DEFECTS}</p>
+                    <p class="text-gray-700"><strong>Creasing:</strong> ${item.CREASING}</p>
+                    <p class="text-700"><strong>Gloss:</strong> ${item.GLOSS}</p>
+                    <p class="text-gray-700"><strong>Interior:</strong> ${item.INTERIOR}</p>
+                `;
+                cheatsheetContainer.appendChild(card);
+            });
+        }
+
+        // Function to calculate the final grade and update details
+        function calculateGrade() {
+            let totalDeductions = 0;
+            const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
+            const defectSelections = document.querySelectorAll('#defects-dl select');
+
+            wearSelections.forEach(radioEl => {
+                totalDeductions += defectLevels[radioEl.value];
+            });
+            
+            defectSelections.forEach(selectEl => {
+                totalDeductions += parseFloat(selectEl.value);
+            });
+
+            // Start with a perfect score (10.0) and subtract points
+            let finalScore = 10.0 - totalDeductions;
+            
+            // Ensure the score is not negative
+            if (finalScore < 0) {
+                finalScore = 0.0;
+            }
+
+            // Find the closest grade from the comicData
+            let closestGradeItem = null;
+            let minDifference = Infinity;
+
+            comicData.forEach(item => {
+                const grade = parseFloat(item.GRADE);
+                const difference = Math.abs(finalScore - grade);
+                if (difference < minDifference) {
+                    minDifference = difference;
+                    closestGradeItem = item;
+                }
+            });
+
+            // Display the final score and update details
+            if (totalDeductions === 0) {
+                finalGradeEl.textContent = '10.0';
+                finalGradeNoteEl.textContent = 'Gem Mint';
+                // Set initial values for grade details
+                const initialDetails = comicData.find(item => item.GRADE === 9.9);
+                detailsDeductionsEl.textContent = initialDetails["POINT DEDUCTIONS"];
+                detailsDefectsEl.textContent = initialDetails.DEFECTS;
+                detailsCreasingEl.textContent = initialDetails.CREASING;
+                detailsWearEl.textContent = initialDetails.WEAR;
+                detailsGlossEl.textContent = initialDetails.GLOSS;
+                detailsInteriorEl.textContent = initialDetails.INTERIOR;
+            } else if (closestGradeItem) {
+                finalGradeEl.textContent = `${closestGradeItem.GRADE}`;
+                finalGradeNoteEl.textContent = closestGradeItem.NOTES;
+                // Update details based on the new closest grade
+                detailsDeductionsEl.textContent = closestGradeItem["POINT DEDUCTIONS"];
+                detailsDefectsEl.textContent = closestGradeItem.DEFECTS;
+                detailsCreasingEl.textContent = closestGradeItem.CREASING;
+                detailsWearEl.textContent = closestGradeItem.WEAR;
+                detailsGlossEl.textContent = closestGradeItem.GLOSS;
+                detailsInteriorEl.textContent = closestGradeItem.INTERIOR;
+            } else {
+                finalGradeEl.textContent = '--';
+                finalGradeNoteEl.textContent = '';
+                detailsDeductionsEl.textContent = '';
+                detailsDefectsEl.textContent = '';
+                detailsCreasingEl.textContent = '';
+                detailsWearEl.textContent = '';
+                detailsGlossEl.textContent = '';
+                detailsInteriorEl.textContent = '';
+            }
+        }
+
+        // Tab functionality
+        tabWear.addEventListener('click', () => {
+            tabWear.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            tabDefects.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            tabDefects.classList.add('text-gray-500');
+            wearContent.classList.remove('hidden');
+            defectsContent.classList.add('hidden');
+            calculateGrade();
+        });
+
+        tabDefects.addEventListener('click', () => {
+            tabDefects.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            tabWear.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            tabWear.classList.add('text-gray-500');
+            defectsContent.classList.remove('hidden');
+            wearContent.classList.add('hidden');
+            calculateGrade();
+        });
+        
+        // Drawer functionality
+        openDrawerBtn.addEventListener('click', () => {
+            cheatsheetDrawer.classList.remove('-translate-x-full');
+            drawerBackdrop.classList.remove('hidden');
+            setTimeout(() => {
+                drawerBackdrop.classList.add('opacity-50');
+            }, 10);
+        });
+
+        const closeDrawer = () => {
+            cheatsheetDrawer.classList.add('-translate-x-full');
+            drawerBackdrop.classList.remove('opacity-50');
+            setTimeout(() => {
+                drawerBackdrop.classList.add('hidden');
+            }, 300); // Wait for transition to finish before hiding
+        };
+
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        drawerBackdrop.addEventListener('click', closeDrawer);
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderWearForm();
+            renderDefectsForm();
+            renderCheatsheet();
+            // Initial call to set the grade to 10.0 on load
+            calculateGrade();
+        });
+
+    </script>
+</body>
+</html>
