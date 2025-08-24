@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comic Book Grading Tool</title>
+    <title>Raw Comic Book Grading Tool</title>
     <!-- Use Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Set Inter font for a clean look -->
@@ -12,32 +12,32 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #e5e7eb;
             min-height: 100vh;
         }
         
         .main-card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            background-color: #ffffff;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
         
         .grade-display {
-            background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+            background-color: #4f46e5;
             box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.3);
         }
         
         .details-panel {
-            background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+            background-color: #f1f5f9;
             box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
         }
         
         .form-panel {
-            background: linear-gradient(145deg, #fafafa 0%, #f4f4f5 100%);
+            background-color: #fafafa;
             box-shadow: 0 6px 15px -3px rgba(0, 0, 0, 0.1);
         }
         
         .drawer-panel {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            background-color: #ffffff;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
         }
         
@@ -57,33 +57,33 @@
             height: 24px;
             border: 2px solid #e2e8f0;
             border-radius: 50%;
-            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            background-color: #ffffff;
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.2s ease;
         }
         
         .radio-button:checked {
-            background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 100%);
-            border-color: #4f46e5;
-            box-shadow: 0 3px 6px -1px rgba(79, 70, 229, 0.3);
+            border-width: 3px;
+        }
+
+        .radio-button-green:checked {
+            background-color: #22c55e;
+            border-color: #16a34a;
         }
         
-        .radio-button:checked::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        .radio-button-amber:checked {
+            background-color: #f59e0b;
+            border-color: #d97706;
+        }
+        
+        .radio-button-red:checked {
+            background-color: #ef4444;
+            border-color: #dc2626;
         }
         
         .select-input {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            background-color: #ffffff;
             border: 2px solid #e2e8f0;
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
@@ -99,7 +99,7 @@
         }
         
         .message-box {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            background-color: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
             position: fixed;
@@ -113,12 +113,12 @@
         
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 relative">
+<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4 relative">
 
     <!-- Cheatsheet Drawer Container -->
     <div id="cheatsheet-drawer" class="fixed top-0 left-0 w-80 h-full drawer-panel shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Comic Grading Cheatsheet</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Raw Comic Grading Cheatsheet</h2>
             <button id="close-drawer-btn" class="text-gray-500 hover:text-indigo-600 focus:outline-none transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -131,7 +131,7 @@
     </div>
 
     <!-- Backdrop Overlay -->
-    <div id="drawer-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300 ease-in-out"></div>
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black z-40 hidden transition-opacity duration-300 ease-in-out"></div>
 
     <!-- Main application container -->
     <div class="container main-card rounded-2xl p-6 md:p-12 space-y-8 relative">
@@ -145,14 +145,14 @@
                 </svg>
             </button>
             <div class="flex flex-col">
-                <h1 class="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent text-left">Comic Book Grading Tool</h1>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 text-left">Comic Book Grading Tool</h1>
                 <p class="text-left text-gray-600 text-lg font-medium">
                     Use this tool to determine the approximate grade of your comic book.
                 </p>
             </div>
         </div>
 
-        <!-- Grade Result Display aligned to the left -->
+        <!-- Grade Result Display and details aligned to the left -->
         <div class="flex justify-start items-center gap-4">
             <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 flex flex-col items-center justify-center text-center">
                 <p id="final-grade" class="text-7xl font-extrabold text-white">10.0</p>
@@ -178,8 +178,8 @@
             <!-- Wear Tab Content -->
             <div id="wear-content" class="pt-4">
                 <!-- New Guide Section -->
-                <details class="mb-4 text-sm text-gray-600 rounded-lg p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-indigo-100">
-                    <summary class="font-semibold cursor-pointer text-indigo-700 hover:text-indigo-800 transition-colors">Basic Guidelines</summary>
+                <details class="mb-4 text-sm text-gray-600 rounded-lg p-4 bg-gray-100 border border-gray-200">
+                    <summary class="font-semibold cursor-pointer text-gray-700 hover:text-gray-800 transition-colors">Basic Guidelines</summary>
                     <ul class="list-disc list-inside mt-2 space-y-1">
                         <li><strong>Negligible:</strong> Can only be seen with magnification.</li>
                         <li><strong>Tiny:</strong> Can barely be seen but is obvious with magnification.</li>
@@ -195,13 +195,13 @@
                     <table class="w-full table-fixed">
                         <thead>
                             <tr>
-                                <th class="px-3 py-3 text-left text-gray-700 font-bold w-1/4 bg-gradient-to-r from-gray-50 to-gray-100">Area</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-green-50 to-green-100">Negligible</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-blue-50 to-blue-100">Tiny</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-yellow-50 to-yellow-100">Minor</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-orange-50 to-orange-100">Moderate</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-red-50 to-red-100">Extensive</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gradient-to-r from-purple-50 to-purple-100">Major</th>
+                                <th class="px-3 py-3 text-left text-gray-700 font-bold w-1/4 bg-gray-100">Area</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Negligible</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Tiny</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Minor</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Moderate</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Extensive</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Major</th>
                             </tr>
                         </thead>
                         <tbody id="wear-form">
@@ -365,12 +365,17 @@
                 </div>
             </div>
         </div>
+        <div class="flex justify-start mt-4">
+            <button id="reset-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Reset
+            </button>
+        </div>
     </div>
     
     <!-- Message box for user notifications -->
     <div id="message-box" class="message-box hidden">
         <div id="message-content"></div>
-        <button id="close-message-btn" class="mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-200 transform hover:scale-105">
+        <button id="close-message-btn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-full">
             Close
         </button>
     </div>
@@ -567,6 +572,8 @@
         const openDrawerBtn = document.getElementById('open-drawer-btn');
         const closeDrawerBtn = document.getElementById('close-drawer-btn');
         const drawerBackdrop = document.getElementById('drawer-backdrop');
+        const resetBtn = document.getElementById('reset-btn');
+
 
         // Tab elements
         const tabWear = document.getElementById('tab-wear');
@@ -592,20 +599,31 @@
                 areaRow.className = 'border-t border-gray-300';
                 
                 const areaLabel = document.createElement('td');
-                areaLabel.className = 'px-3 py-4 text-left text-gray-800 font-semibold bg-gradient-to-r from-gray-50 to-gray-100';
+                areaLabel.className = 'px-3 py-4 text-left text-gray-800 font-semibold bg-gray-100';
                 areaLabel.textContent = area;
                 areaRow.appendChild(areaLabel);
 
                 // Create a radio button for each defect level
                 Object.keys(defectLevels).forEach((level, index) => {
                     const cell = document.createElement('td');
-                    cell.className = 'px-3 py-4 text-center bg-gradient-to-br from-white to-gray-50';
+                    cell.className = `px-3 py-4 text-center bg-gray-50`;
                     
                     const radioInput = document.createElement('input');
                     radioInput.type = 'radio';
                     radioInput.name = area.toLowerCase(); // Unique name for each group
                     radioInput.value = level;
-                    radioInput.className = 'radio-button relative';
+                    
+                    let colorClass = '';
+                    if (index < 2) {
+                        colorClass = 'radio-button-green';
+                    } else if (index < 4) {
+                        colorClass = 'radio-button-amber';
+                    } else {
+                        colorClass = 'radio-button-red';
+                    }
+
+                    radioInput.className = `radio-button relative ${colorClass}`;
+                    
                     if (index === 0) {
                         radioInput.checked = true; // Default to 'Negligible'
                     }
@@ -617,13 +635,17 @@
                 defectFormWear.appendChild(areaRow);
             });
             // Add a single change listener to the parent form to improve performance
-            defectFormWear.addEventListener('change', calculateGrade);
+            if (defectFormWear) {
+              defectFormWear.addEventListener('change', calculateGrade);
+            }
         }
-
+        
         // Function to render the defect selection form for 'Defects' tab
         function renderDefectsForm() {
             // Clear existing content to prevent duplicates
-            defectsDl.innerHTML = '';
+            if (defectsDl) {
+              defectsDl.innerHTML = '';
+            }
             
             defectsData.forEach(defectCategory => {
                 const flexDiv = document.createElement('div');
@@ -656,26 +678,36 @@
                 dd.appendChild(select);
                 flexDiv.appendChild(dt);
                 flexDiv.appendChild(dd);
-                defectsDl.appendChild(flexDiv);
+                if (defectsDl) {
+                  defectsDl.appendChild(flexDiv);
+                }
             });
-             defectsDl.addEventListener('change', calculateGrade);
+            if (defectsDl) {
+              defectsDl.addEventListener('change', calculateGrade);
+            }
         }
 
         // Function to render the cheatsheet
         function renderCheatsheet() {
-            cheatsheetContainer.innerHTML = ''; // Clear loading message
+            if (cheatsheetContainer) {
+              cheatsheetContainer.innerHTML = ''; // Clear loading message
+            }
+            
             comicData.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl border border-gray-200 shadow-lg';
+                card.className = 'bg-white p-6 rounded-xl border border-gray-200 shadow-sm';
                 card.innerHTML = `
-                    <h3 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">Grade: ${item.GRADE} - ${item.NOTES}</h3>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Grade: ${item.GRADE} - ${item.NOTES}</h3>
                     <p class="text-gray-700"><strong>Point Deductions:</strong> ${item["POINT DEDUCTIONS"]}</p>
                     <p class="text-gray-700"><strong>Defects:</strong> ${item.DEFECTS}</p>
                     <p class="text-gray-700"><strong>Creasing:</strong> ${item.CREASING}</p>
-                    <p class="text-700"><strong>Gloss:</strong> ${item.GLOSS}</p>
+                    <p class="text-gray-700"><strong>Wear:</strong> ${item.WEAR}</p>
+                    <p class="text-gray-700"><strong>Gloss:</strong> ${item.GLOSS}</p>
                     <p class="text-gray-700"><strong>Interior:</strong> ${item.INTERIOR}</p>
                 `;
-                cheatsheetContainer.appendChild(card);
+                if (cheatsheetContainer) {
+                  cheatsheetContainer.appendChild(card);
+                }
             });
         }
 
@@ -716,36 +748,57 @@
 
             // Display the final score and update details
             if (totalDeductions === 0) {
-                finalGradeEl.textContent = '10.0';
-                finalGradeNoteEl.textContent = 'Gem Mint';
+                if(finalGradeEl) finalGradeEl.textContent = '10.0';
+                if(finalGradeNoteEl) finalGradeNoteEl.textContent = 'Gem Mint';
                 // Set initial values for grade details
                 const initialDetails = comicData.find(item => item.GRADE === 9.9);
-                detailsDeductionsEl.textContent = initialDetails["POINT DEDUCTIONS"];
-                detailsDefectsEl.textContent = initialDetails.DEFECTS;
-                detailsCreasingEl.textContent = initialDetails.CREASING;
-                detailsWearEl.textContent = initialDetails.WEAR;
-                detailsGlossEl.textContent = initialDetails.GLOSS;
-                detailsInteriorEl.textContent = initialDetails.INTERIOR;
+                if(detailsDeductionsEl) detailsDeductionsEl.textContent = initialDetails["POINT DEDUCTIONS"];
+                if(detailsDefectsEl) detailsDefectsEl.textContent = initialDetails.DEFECTS;
+                if(detailsCreasingEl) detailsCreasingEl.textContent = initialDetails.CREASING;
+                if(detailsWearEl) detailsWearEl.textContent = initialDetails.WEAR;
+                if(detailsGlossEl) detailsGlossEl.textContent = initialDetails.GLOSS;
+                if(detailsInteriorEl) detailsInteriorEl.textContent = initialDetails.INTERIOR;
             } else if (closestGradeItem) {
-                finalGradeEl.textContent = `${closestGradeItem.GRADE}`;
-                finalGradeNoteEl.textContent = closestGradeItem.NOTES;
+                if(finalGradeEl) finalGradeEl.textContent = `${closestGradeItem.GRADE}`;
+                if(finalGradeNoteEl) finalGradeNoteEl.textContent = closestGradeItem.NOTES;
                 // Update details based on the new closest grade
-                detailsDeductionsEl.textContent = closestGradeItem["POINT DEDUCTIONS"];
-                detailsDefectsEl.textContent = closestGradeItem.DEFECTS;
-                detailsCreasingEl.textContent = closestGradeItem.CREASING;
-                detailsWearEl.textContent = closestGradeItem.WEAR;
-                detailsGlossEl.textContent = closestGradeItem.GLOSS;
-                detailsInteriorEl.textContent = closestGradeItem.INTERIOR;
+                if(detailsDeductionsEl) detailsDeductionsEl.textContent = closestGradeItem["POINT DEDUCTIONS"];
+                if(detailsDefectsEl) detailsDefectsEl.textContent = closestGradeItem.DEFECTS;
+                if(detailsCreasingEl) detailsCreasingEl.textContent = closestGradeItem.CREASING;
+                if(detailsWearEl) detailsWearEl.textContent = closestGradeItem.WEAR;
+                if(detailsGlossEl) detailsGlossEl.textContent = closestGradeItem.GLOSS;
+                if(detailsInteriorEl) detailsInteriorEl.textContent = closestGradeItem.INTERIOR;
             } else {
-                finalGradeEl.textContent = '--';
-                finalGradeNoteEl.textContent = '';
-                detailsDeductionsEl.textContent = '';
-                detailsDefectsEl.textContent = '';
-                detailsCreasingEl.textContent = '';
-                detailsWearEl.textContent = '';
-                detailsGlossEl.textContent = '';
-                detailsInteriorEl.textContent = '';
+                if(finalGradeEl) finalGradeEl.textContent = '--';
+                if(finalGradeNoteEl) finalGradeNoteEl.textContent = '';
+                if(detailsDeductionsEl) detailsDeductionsEl.textContent = '';
+                if(detailsDefectsEl) detailsDefectsEl.textContent = '';
+                if(detailsCreasingEl) detailsCreasingEl.textContent = '';
+                if(detailsWearEl) detailsWearEl.textContent = '';
+                if(detailsGlossEl) detailsGlossEl.textContent = '';
+                if(detailsInteriorEl) detailsInteriorEl.textContent = '';
             }
+        }
+
+        // Reset function
+        function resetForm() {
+            // Reset all radio buttons to the first option (Negligible)
+            const radioGroups = document.querySelectorAll('#wear-form tr');
+            radioGroups.forEach(row => {
+                const firstRadio = row.querySelector('input[type="radio"]');
+                if (firstRadio) {
+                    firstRadio.checked = true;
+                }
+            });
+
+            // Reset all select dropdowns to the first option (None)
+            const selectDropdowns = document.querySelectorAll('#defects-dl select');
+            selectDropdowns.forEach(select => {
+                select.selectedIndex = 0;
+            });
+
+            // Recalculate the grade after resetting
+            calculateGrade();
         }
 
         // Tab functionality
@@ -786,6 +839,11 @@
 
         closeDrawerBtn.addEventListener('click', closeDrawer);
         drawerBackdrop.addEventListener('click', closeDrawer);
+
+        // Event listener for the reset button
+        if (resetBtn) {
+          resetBtn.addEventListener('click', resetForm);
+        }
 
         // Initial setup on page load
         document.addEventListener('DOMContentLoaded', () => {
