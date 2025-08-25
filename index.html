@@ -111,6 +111,28 @@
             text-align: center;
         }
         
+        /* Zebra stripes and lines for tables and definition lists */
+        .stripe-row:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .horizontal-line {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .optgroup-high {
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+        .optgroup-mid {
+            background-color: #fffbeb;
+            color: #b45309;
+        }
+        .optgroup-low {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
     </style>
 </head>
 <body class="bg-gray-200 flex items-center justify-center min-h-screen p-4 relative">
@@ -214,24 +236,24 @@
             <!-- Defects Tab Content (initially hidden) -->
             <div id="defects-content" class="hidden pt-4">
                  <div class="overflow-x-auto">
-                    <dl id="defects-dl" class="space-y-4">
+                    <dl id="defects-dl" class="space-y-1">
                         <!-- Definition list items for each defect category -->
                         
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Tears/Splits</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-tears" id="defects-tears">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Up to 1/4 inch</option>
                                         <option value="1.0">1/4 to 1/2 inch</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">1/2 inch to 1 inch</option>
                                         <option value="2.0">Small tears</option>
                                         <option value="2.5">Several small tears</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Large tears</option>
                                         <option value="3.5">Many tears</option>
                                         <option value="4.0">Large missing pieces</option>
@@ -240,20 +262,20 @@
                             </dd>
                         </div>
 
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Stains/Water Damage</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-stains" id="defects-stains">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Light foxing</option>
                                         <option value="1.0">Light water stain</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">Moderate stain</option>
                                         <option value="2.0">Heavy stain</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Extensive staining</option>
                                         <option value="4.0">Heavy moisture damage</option>
                                     </optgroup>
@@ -261,20 +283,20 @@
                             </dd>
                         </div>
 
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Tape</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-tape" id="defects-tape">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Slightly discolored</option>
                                         <option value="1.0">Small amount</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">Moderate amount</option>
                                         <option value="2.0">Discolored/Brittle</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Extensive amount</option>
                                         <option value="4.0">Major repairs</option>
                                     </optgroup>
@@ -282,20 +304,20 @@
                             </dd>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Writing</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-writing" id="defects-writing">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Inconspicuous marking</option>
                                         <option value="1.0">Date stamp</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">Small price mark</option>
                                         <option value="2.0">Small writing</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Large writing</option>
                                         <option value="4.0">Extensive defacing</option>
                                     </optgroup>
@@ -303,19 +325,19 @@
                             </dd>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Stamps</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-stamps" id="defects-stamps">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Small stamp</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.0">Small, distracting stamp</option>
                                         <option value="1.5">Multiple small stamps</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="2.0">Large stamp</option>
                                         <option value="2.5">Multiple large stamps</option>
                                     </optgroup>
@@ -323,18 +345,18 @@
                             </dd>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Holes/Punches</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-holes" id="defects-holes">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.0">Small hole</option>
                                         <option value="1.5">Single punch hole</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="2.0">Large hole</option>
                                         <option value="3.0">Multiple holes</option>
                                     </optgroup>
@@ -342,19 +364,19 @@
                             </dd>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4">
                             <dt class="w-full md:w-1/3 text-gray-600 font-semibold">Other</dt>
                             <dd class="w-full md:w-2/3">
                                 <select class="w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none" name="defects-other" id="defects-other">
-                                    <optgroup label="High Grade">
+                                    <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Slight mis-cut</option>
                                     </optgroup>
-                                    <optgroup label="Mid Grade">
+                                    <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.0">Subscription crease</option>
                                         <option value="1.5">Slight foxing</option>
                                     </optgroup>
-                                    <optgroup label="Low Grade">
+                                    <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="2.0">Severe mis-cut</option>
                                         <option value="3.0">Loose staples</option>
                                     </optgroup>
@@ -594,19 +616,19 @@
 
         // Function to render the defect selection form with radio buttons for 'Wear' tab
         function renderWearForm() {
-            comicAreasWear.forEach(area => {
+            comicAreasWear.forEach((area, rowIndex) => {
                 const areaRow = document.createElement('tr');
-                areaRow.className = 'border-t border-gray-300';
+                areaRow.className = `border-t border-gray-300 ${rowIndex % 2 === 1 ? 'stripe-row' : ''}`;
                 
                 const areaLabel = document.createElement('td');
-                areaLabel.className = 'px-3 py-4 text-left text-gray-800 font-semibold bg-gray-100';
+                areaLabel.className = 'px-3 py-4 text-left text-gray-800 font-semibold';
                 areaLabel.textContent = area;
                 areaRow.appendChild(areaLabel);
 
                 // Create a radio button for each defect level
                 Object.keys(defectLevels).forEach((level, index) => {
                     const cell = document.createElement('td');
-                    cell.className = `px-3 py-4 text-center bg-gray-50`;
+                    cell.className = `px-3 py-4 text-center`;
                     
                     const radioInput = document.createElement('input');
                     radioInput.type = 'radio';
@@ -647,9 +669,9 @@
               defectsDl.innerHTML = '';
             }
             
-            defectsData.forEach(defectCategory => {
+            defectsData.forEach((defectCategory, rowIndex) => {
                 const flexDiv = document.createElement('div');
-                flexDiv.className = "flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4";
+                flexDiv.className = `flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 stripe-row horizontal-line p-4`;
 
                 const dt = document.createElement('dt');
                 dt.className = 'w-full md:w-1/3 text-gray-600 font-semibold';
@@ -659,13 +681,23 @@
                 dd.className = 'w-full md:w-2/3';
 
                 const select = document.createElement('select');
-                select.className = 'w-full rounded-md p-1 border border-gray-300';
+                select.className = 'w-full rounded-lg p-3 border border-gray-300 select-input focus:outline-none';
                 select.name = `defects-${defectCategory.category.toLowerCase().replace(/[\s\/]/g, '-')}`;
 
                 for (const group in defectCategory.options) {
                     const optgroup = document.createElement('optgroup');
                     optgroup.label = group;
                     
+                    let optgroupClass = '';
+                    if (group.includes('High')) {
+                        optgroupClass = 'optgroup-high';
+                    } else if (group.includes('Mid')) {
+                        optgroupClass = 'optgroup-mid';
+                    } else if (group.includes('Low')) {
+                        optgroupClass = 'optgroup-low';
+                    }
+                    optgroup.className = optgroupClass;
+
                     defectCategory.options[group].forEach(option => {
                         const optionEl = document.createElement('option');
                         optionEl.value = option.value;
