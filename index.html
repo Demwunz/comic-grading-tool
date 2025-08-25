@@ -133,6 +133,38 @@
             color: #b91c1c;
         }
 
+        .radio-cell-green { background-color: #f0fdf4; }
+        .radio-cell-yellow { background-color: #fffbeb; }
+        .radio-cell-red { background-color: #fef2f2; }
+
+        .tooltip-container {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body class="bg-gray-200 flex items-center justify-center min-h-screen p-4 relative">
@@ -195,35 +227,41 @@
             <div class="flex border-b border-gray-300">
                 <button id="tab-wear" class="py-3 px-6 font-semibold text-indigo-600 border-b-2 border-indigo-600 focus:outline-none tab-button rounded-t-lg">Wear</button>
                 <button id="tab-defects" class="py-3 px-6 font-semibold text-gray-500 focus:outline-none tab-button rounded-t-lg">Defects</button>
+                <button id="tab-advanced" class="py-3 px-6 font-semibold text-gray-500 focus:outline-none tab-button rounded-t-lg">Advanced</button>
             </div>
             
             <!-- Wear Tab Content -->
             <div id="wear-content" class="pt-4">
-                <!-- New Guide Section -->
-                <details class="mb-4 text-sm text-gray-600 rounded-lg p-4 bg-gray-100 border border-gray-200">
-                    <summary class="font-semibold cursor-pointer text-gray-700 hover:text-gray-800 transition-colors">Basic Guidelines</summary>
-                    <ul class="list-disc list-inside mt-2 space-y-1">
-                        <li><strong>Negligible:</strong> Can only be seen with magnification.</li>
-                        <li><strong>Tiny:</strong> Can barely be seen but is obvious with magnification.</li>
-                        <li><strong>Minor:</strong> Obvious but very minor and does not significantly detract from the appeal.</li>
-                        <li><strong>Moderate:</strong> Obvious and detracts from the presentation/appeal of the book.</li>
-                        <li><strong>Extensive:</strong> Damage is too bad to be considered moderate but not bad enough to be major.</li>
-                        <li><strong>Major:</strong> Unsightly and significantly impacts the presentation/appeal/readability.</li>
-                    </ul>
-                </details>
                 <hr class="my-4 border-gray-300" />
-
                 <div class="overflow-x-auto">
                     <table class="w-full table-fixed">
                         <thead>
                             <tr>
                                 <th class="px-3 py-3 text-left text-gray-700 font-bold w-1/4 bg-gray-100">Area</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Negligible</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Tiny</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Minor</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Moderate</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Extensive</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Major</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Negligible
+                                    <span class="tooltip-text">Can only be seen with magnification.</span>
+                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Tiny
+                                    <span class="tooltip-text">Can barely be seen but is obvious with magnification.</span>
+                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Minor
+                                    <span class="tooltip-text">Obvious but very minor and does not significantly detract from the appeal.</span>
+                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Moderate
+                                    <span class="tooltip-text">Obvious and detracts from the presentation/appeal of the book.</span>
+                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Extensive
+                                    <span class="tooltip-text">Damage too bad to be considered moderate but not bad enough to be major.</span>
+                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
+                                    Major
+                                    <span class="tooltip-text">Unsightly and significantly impacts the presentation/appeal/readability.</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="wear-form">
@@ -255,7 +293,7 @@
                                     </optgroup>
                                     <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Large tears</option>
-                                        <option value="3.5">Many tears</option>
+                                        <option value="3.5">Many tears</s:l>
                                         <option value="4.0">Large missing pieces</option>
                                     </optgroup>
                                 </select>
@@ -269,14 +307,14 @@
                                     <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Light foxing</option>
-                                        <option value="1.0">Light water stain</option>
+                                        <option value="1.0">Light water stain</s:l>
                                     </optgroup>
                                     <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">Moderate stain</option>
                                         <option value="2.0">Heavy stain</option>
                                     </optgroup>
                                     <optgroup label="Low Grade" class="optgroup-low">
-                                        <option value="3.0">Extensive staining</option>
+                                        <option value="3.0">Extensive staining</s:l>
                                         <option value="4.0">Heavy moisture damage</option>
                                     </optgroup>
                                 </select>
@@ -290,7 +328,7 @@
                                     <optgroup label="High Grade" class="optgroup-high">
                                         <option value="0">None</option>
                                         <option value="0.5">Slightly discolored</option>
-                                        <option value="1.0">Small amount</option>
+                                        <option value="1.0">Small amount</s:l>
                                     </optgroup>
                                     <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.5">Moderate amount</option>
@@ -314,8 +352,8 @@
                                         <option value="1.0">Date stamp</option>
                                     </optgroup>
                                     <optgroup label="Mid Grade" class="optgroup-mid">
-                                        <option value="1.5">Small price mark</option>
-                                        <option value="2.0">Small writing</option>
+                                        <option value="1.5">Small price mark</s:l>
+                                        <option value="2.0">Small writing</s:l>
                                     </optgroup>
                                     <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="3.0">Large writing</option>
@@ -353,8 +391,8 @@
                                         <option value="0">None</option>
                                     </optgroup>
                                     <optgroup label="Mid Grade" class="optgroup-mid">
-                                        <option value="1.0">Small hole</option>
-                                        <option value="1.5">Single punch hole</option>
+                                        <option value="1.0">Small hole</s:l>
+                                        <option value="1.5">Single punch hole</s:l>
                                     </optgroup>
                                     <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="2.0">Large hole</option>
@@ -374,7 +412,7 @@
                                     </optgroup>
                                     <optgroup label="Mid Grade" class="optgroup-mid">
                                         <option value="1.0">Subscription crease</option>
-                                        <option value="1.5">Slight foxing</option>
+                                        <option value="1.5">Slight foxing</s:l>
                                     </optgroup>
                                     <optgroup label="Low Grade" class="optgroup-low">
                                         <option value="2.0">Severe mis-cut</option>
@@ -384,6 +422,28 @@
                             </dd>
                         </div>
                     </dl>
+                </div>
+            </div>
+            
+            <!-- Advanced Tab Content (initially hidden) -->
+            <div id="advanced-content" class="hidden pt-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="px-3 py-3 text-left text-gray-700 font-bold w-1/4 bg-gray-100">Defect</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Negligible</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Tiny</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Minor</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Moderate</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Extensive</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Major</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cgc-form">
+                            <!-- CGC rows will be dynamically populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -600,8 +660,11 @@
         // Tab elements
         const tabWear = document.getElementById('tab-wear');
         const tabDefects = document.getElementById('tab-defects');
+        const tabAdvanced = document.getElementById('tab-advanced');
         const wearContent = document.getElementById('wear-content');
         const defectsContent = document.getElementById('defects-content');
+        const advancedContent = document.getElementById('advanced-content');
+
 
         // Function to display a message box
         function showMessage(message) {
@@ -743,19 +806,178 @@
             });
         }
 
+        const cgcDefectsGrouped = {
+            'Bindery': ['distribution ink', 'bindary chip', 'bindary tear'],
+            'Corners': ['bend', 'crease', 'fingerprints', 'shadow'],
+            'Edges': ['printer tear', 'tear', 'soiling', 'stain', 'foxing', 'tanning', 'missing piece cover', 'marvel chipping'],
+            'Spine': ['stress lines', 'spine roll', 'spine split'],
+            'Staples': ['staple rust', 'staple tears', 'staple detached', 'staple holes', 'staple extra (a.m.)', 'staple removed'],
+            'Cover': ['stamp', 'crease', 'stain', 'erasure mark', 'marvel tears', 'shadow', 'fingerprints', 'missing piece cover', 'fade', 'marvel chipping', 'name written on cover', 'tape', 'detached wrap', 'detached cover', 'missing page/wrap'],
+            'Pages': ['rust stains', 'foxing', 'tanning', 'writing', 'tear', 'missing piece interior', 'detatched page', 'staple removed', 'missing page/wrap']
+        };
+
+        const cgcDeductionLevels = ["Negligible", "Tiny", "Minor", "Moderate", "Extensive", "Major"];
+        const cgcLevelValues = {
+            "Negligible": 0.0, "Tiny": 0.5, "Minor": 1.0, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.0
+        };
+
+        const getCgcDeduction = (defect, level) => {
+            const deductions = {
+                'distribution ink': {"Negligible": 0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'stress lines': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.5, "Moderate": 1.5, "Extensive": 3.5, "Major": 5.0},
+                'bend': {"Negligible": 0.0, "Tiny": 0.3, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'stamp': {"Negligible": 0.0, "Tiny": 0.3, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'printer tear': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.7, "Moderate": 1.5, "Extensive": 3.0, "Major": 5.0},
+                'soiling': {"Negligible": 0.0, "Tiny": 0.7, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 7.0},
+                'bindary chip': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'bindary tear': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.7, "Moderate": 1.5, "Extensive": 3.0, "Major": 5.0},
+                'crease': {"Negligible": 0.0, "Tiny": 0.3, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'stain': {"Negligible": 0.0, "Tiny": 0.7, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 7.0},
+                'printer hole': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'rust stains': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'erasure mark': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'marvel tears': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'shadow': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.5, "Extensive": 5.0, "Major": 7.5},
+                'fingerprints': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.5, "Extensive": 5.0, "Major": 7.5},
+                'staple rust': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'staple tears': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'foxing': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.5, "Moderate": 1.2, "Extensive": 2.2, "Major": 3.5},
+                'tanning': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.5, "Moderate": 1.2, "Extensive": 2.2, "Major": 3.5},
+                'writing': {"Negligible": 0.0, "Tiny": 0.3, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'tear': {"Negligible": 0.0, "Tiny": 0.3, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'missing piece cover': {"Negligible": 0.0, "Tiny": 0.5, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 8.0},
+                'fade': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'marvel chipping': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'spine roll': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'tape stain': {"Negligible": 0.0, "Tiny": 0.5, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 8.0},
+                'spine split': {"Negligible": 0.0, "Tiny": 0.5, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 8.0},
+                'sticker': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'name written on cover': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'staple detached': {"Negligible": 0.0, "Tiny": 0.5, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 8.0},
+                'tape': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'staple holes': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5},
+                'detached wrap': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'staple extra (a.m.)': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'detatched page': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'staple removed': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'missing piece interior': {"Negligible": 0.0, "Tiny": 0.0, "Minor": 0.0, "Moderate": 0.0, "Extensive": 0.0, "Major": 0.0},
+                'detached cover': {"Negligible": 0.0, "Tiny": 0.5, "Minor": 1.2, "Moderate": 2.5, "Extensive": 5.0, "Major": 8.0},
+                'missing page/wrap': {"Negligible": 0.0, "Tiny": 0.2, "Minor": 0.8, "Moderate": 2.0, "Extensive": 4.0, "Major": 6.5}
+            };
+            return deductions[defect][level] || 0;
+        };
+        
+
+        function renderCgcForm() {
+            const cgcFormBody = document.getElementById('cgc-form');
+            if (!cgcFormBody) return;
+            cgcFormBody.innerHTML = '';
+            
+            const cgcDefectLevels = ["Negligible", "Tiny", "Minor", "Moderate", "Extensive", "Major"];
+
+            Object.keys(cgcDefectsGrouped).forEach((group, groupIndex) => {
+                const groupRow = document.createElement('tr');
+                groupRow.className = `bg-gray-100 ${groupIndex > 0 ? 'border-t-2 border-gray-300' : ''}`;
+                const groupHeader = document.createElement('td');
+                groupHeader.colSpan = 7;
+                groupHeader.className = 'py-2 px-4 font-bold text-gray-800 text-left';
+                groupHeader.textContent = group;
+                groupRow.appendChild(groupHeader);
+                cgcFormBody.appendChild(groupRow);
+                
+                cgcDefectsGrouped[group].forEach((defect, rowIndex) => {
+                    const row = document.createElement('tr');
+                    row.className = rowIndex % 2 === 1 ? 'stripe-row' : '';
+                    
+                    const labelCell = document.createElement('td');
+                    labelCell.className = 'py-2 px-4 border-b border-gray-200 font-medium text-gray-700';
+                    labelCell.textContent = defect.charAt(0).toUpperCase() + defect.slice(1);
+                    row.appendChild(labelCell);
+
+                    cgcDefectLevels.forEach((level, levelIndex) => {
+                        const cell = document.createElement('td');
+                        cell.className = 'py-2 px-4 border-b border-gray-200 text-center';
+                        
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = `cgc-${defect.replace(/\s/g, '-')}`;
+                        radio.value = getCgcDeduction(defect, level);
+
+                        let colorClass = '';
+                        if (levelIndex < 2) {
+                            colorClass = 'radio-button-green';
+                        } else if (levelIndex < 4) {
+                            colorClass = 'radio-button-amber';
+                        } else {
+                            colorClass = 'radio-button-red';
+                        }
+                        radio.className = `radio-button relative ${colorClass}`;
+
+                        if (levelIndex === 0) {
+                            radio.checked = true;
+                        }
+                        
+                        cell.appendChild(radio);
+                        row.appendChild(cell);
+                    });
+                    cgcFormBody.appendChild(row);
+                });
+            });
+            if (cgcFormBody) cgcFormBody.addEventListener('change', calculateGrade);
+        }
+        
+        // Function to render the cheatsheet
+        function renderCheatsheet() {
+            if (cheatsheetContainer) {
+              cheatsheetContainer.innerHTML = ''; // Clear loading message
+            }
+            
+            comicData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-6 rounded-xl border border-gray-200 shadow-sm';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Grade: ${item.GRADE} - ${item.NOTES}</h3>
+                    <p class="text-gray-700"><strong>Point Deductions:</strong> ${item["POINT DEDUCTIONS"]}</p>
+                    <p class="text-gray-700"><strong>Defects:</strong> ${item.DEFECTS}</p>
+                    <p class="text-gray-700"><strong>Creasing:</strong> ${item.CREASING}</p>
+                    <p class="text-gray-700"><strong>Wear:</strong> ${item.WEAR}</p>
+                    <p class="text-gray-700"><strong>Gloss:</strong> ${item.GLOSS}</p>
+                    <p class="text-gray-700"><strong>Interior:</strong> ${item.INTERIOR}</p>
+                `;
+                if (cheatsheetContainer) {
+                  cheatsheetContainer.appendChild(card);
+                }
+            });
+        }
+
         // Function to calculate the final grade and update details
         function calculateGrade() {
             let totalDeductions = 0;
-            const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
-            const defectSelections = document.querySelectorAll('#defects-dl select');
+            let currentTab = 'wear';
+            if (wearContent && !wearContent.classList.contains('hidden')) {
+                currentTab = 'wear';
+            } else if (defectsContent && !defectsContent.classList.contains('hidden')) {
+                currentTab = 'defects';
+            } else if (advancedContent && !advancedContent.classList.contains('hidden')) {
+                currentTab = 'advanced';
+            }
 
-            wearSelections.forEach(radioEl => {
-                totalDeductions += defectLevels[radioEl.value];
-            });
-            
-            defectSelections.forEach(selectEl => {
-                totalDeductions += parseFloat(selectEl.value);
-            });
+            if (currentTab === 'wear') {
+                const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
+                wearSelections.forEach(radioEl => {
+                    totalDeductions += defectLevels[radioEl.value];
+                });
+            } else if (currentTab === 'defects') {
+                const defectSelections = document.querySelectorAll('#defects-dl select');
+                defectSelections.forEach(selectEl => {
+                    totalDeductions += parseFloat(selectEl.value);
+                });
+            } else if (currentTab === 'advanced') {
+                const cgcSelections = document.querySelectorAll('#cgc-form input[type="radio"]:checked');
+                cgcSelections.forEach(radioEl => {
+                    totalDeductions += parseFloat(radioEl.value);
+                });
+            }
 
             // Start with a perfect score (10.0) and subtract points
             let finalScore = 10.0 - totalDeductions;
@@ -815,8 +1037,8 @@
         // Reset function
         function resetForm() {
             // Reset all radio buttons to the first option (Negligible)
-            const radioGroups = document.querySelectorAll('#wear-form tr');
-            radioGroups.forEach(row => {
+            const wearRadioGroups = document.querySelectorAll('#wear-form tr');
+            wearRadioGroups.forEach(row => {
                 const firstRadio = row.querySelector('input[type="radio"]');
                 if (firstRadio) {
                     firstRadio.checked = true;
@@ -828,6 +1050,17 @@
             selectDropdowns.forEach(select => {
                 select.selectedIndex = 0;
             });
+            
+            // Reset all CGC radios to the first option (Negligible)
+            const cgcRadios = document.querySelectorAll('#cgc-form input[type="radio"]');
+            cgcRadios.forEach(radio => {
+                // Find the first radio button in each group (which corresponds to Negligible)
+                const groupName = radio.name;
+                const firstRadioInGroup = document.querySelector(`input[name="${groupName}"][value="0"]`);
+                if (firstRadioInGroup) {
+                    firstRadioInGroup.checked = true;
+                }
+            });
 
             // Recalculate the grade after resetting
             calculateGrade();
@@ -836,21 +1069,55 @@
         // Tab functionality
         tabWear.addEventListener('click', () => {
             tabWear.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            tabDefects.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            tabDefects.classList.add('text-gray-500');
-            wearContent.classList.remove('hidden');
-            defectsContent.classList.add('hidden');
+            if (tabDefects) {
+                tabDefects.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                tabDefects.classList.add('text-gray-500');
+            }
+            if (tabAdvanced) {
+                tabAdvanced.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                tabAdvanced.classList.add('text-gray-500');
+            }
+            if (wearContent) wearContent.classList.remove('hidden');
+            if (defectsContent) defectsContent.classList.add('hidden');
+            if (advancedContent) advancedContent.classList.add('hidden');
             calculateGrade();
         });
 
         tabDefects.addEventListener('click', () => {
-            tabDefects.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            tabWear.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            tabWear.classList.add('text-gray-500');
-            defectsContent.classList.remove('hidden');
-            wearContent.classList.add('hidden');
+            if (tabDefects) {
+                tabDefects.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
+            }
+            if (tabWear) {
+                tabWear.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                tabWear.classList.add('text-gray-500');
+            }
+            if (tabAdvanced) {
+                tabAdvanced.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                tabAdvanced.classList.add('text-gray-500');
+            }
+            if (defectsContent) defectsContent.classList.remove('hidden');
+            if (wearContent) wearContent.classList.add('hidden');
+            if (advancedContent) advancedContent.classList.add('hidden');
             calculateGrade();
         });
+        
+        if(tabAdvanced) {
+            tabAdvanced.addEventListener('click', () => {
+                tabAdvanced.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                if (tabWear) {
+                    tabWear.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    tabWear.classList.add('text-gray-500');
+                }
+                if (tabDefects) {
+                    tabDefects.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    tabDefects.classList.add('text-gray-500');
+                }
+                if (advancedContent) advancedContent.classList.remove('hidden');
+                if (wearContent) wearContent.classList.add('hidden');
+                if (defectsContent) defectsContent.classList.add('hidden');
+                calculateGrade();
+            });
+        }
         
         // Drawer functionality
         openDrawerBtn.addEventListener('click', () => {
@@ -882,6 +1149,7 @@
             renderWearForm();
             renderDefectsForm();
             renderCheatsheet();
+            renderCgcForm();
             // Initial call to set the grade to 10.0 on load
             calculateGrade();
         });
