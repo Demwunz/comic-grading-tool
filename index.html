@@ -165,6 +165,35 @@
             opacity: 1;
         }
 
+        /* Sticky positioning for grade result section */
+        #grade-result-section {
+            position: sticky;
+            top: 0;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sticky positioning for form section headers */
+        .section-header-sticky {
+            position: sticky;
+            top: 260px; /* Adjust based on the height of grade result section */
+            background-color: #fafafa;
+            z-index: 20;
+            padding: 1rem 0;
+        }
+
+        /* Collapsible content */
+        .collapsible-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
     </style>
 </head>
 <body class="bg-gray-200 flex items-center justify-center min-h-screen p-4 relative">
@@ -243,18 +272,13 @@
         </div>
 
         <!-- Grade Result Display and details aligned to the left -->
-        <div class="flex justify-start items-center gap-4">
+        <div id="grade-result-section" class="flex justify-start items-center gap-4 bg-white z-30">
             <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 flex flex-col items-center justify-center text-center">
                 <p id="final-grade" class="text-7xl font-extrabold text-white">10.0</p>
                 <p id="final-grade-note" class="text-white text-sm mt-2 font-semibold">Gem Mint</p>
             </div>
             <div id="grade-details" class="flex-grow text-gray-700 p-6 rounded-xl details-panel">
-                <p><strong>Point Deductions:</strong> <span id="details-deductions">0.0-0.1</span></p>
-                <p><strong>Defects:</strong> <span id="details-defects">Slight imperfections</span></p>
-                <p><strong>Creasing:</strong> <span id="details-creasing">Negligible</span></p>
-                <p><strong>Wear:</strong> <span id="details-wear">Negligible</span></p>
-                <p><strong>Gloss:</strong> <span id="details-gloss">High Gloss</span></p>
-                <p><strong>Interior:</strong> <span id="details-interior">White Pages</span></p>
+                <!-- User inputs will be populated here dynamically -->
             </div>
         </div>
         
@@ -262,8 +286,14 @@
         <div class="form-panel p-6 rounded-xl border border-gray-200">
 
             <!-- Wear Section -->
-            <div id="wear-content" class="pb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Wear Assessment</h2>
+            <div id="wear-section" class="pb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex justify-between items-center cursor-pointer hover:text-indigo-600 transition-colors section-header-sticky" onclick="toggleSection('wear')">
+                    <span>Wear Assessment</span>
+                    <svg id="wear-chevron" class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h2>
+                <div id="wear-content" class="collapsible-content">
                 <hr class="my-4 border-gray-300" />
                 <div class="overflow-x-auto">
                     <table class="w-full table-fixed">
@@ -283,11 +313,18 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
             </div>
 
             <!-- Defects Section -->
-            <div id="defects-content" class="pb-8 border-t-2 border-gray-300 pt-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Defects Assessment</h2>
+            <div id="defects-section" class="pb-8 border-t-2 border-gray-300 pt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex justify-between items-center cursor-pointer hover:text-indigo-600 transition-colors section-header-sticky" onclick="toggleSection('defects')">
+                    <span>Defects Assessment</span>
+                    <svg id="defects-chevron" class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h2>
+                <div id="defects-content" class="collapsible-content">
                  <div class="overflow-x-auto">
                     <dl id="defects-dl" class="space-y-1">
                         <!-- Definition list items for each defect category -->
@@ -438,11 +475,18 @@
                         </div>
                     </dl>
                 </div>
+                </div>
             </div>
 
             <!-- Advanced Section -->
-            <div id="advanced-content" class="pb-8 border-t-2 border-gray-300 pt-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Advanced Details (CGC)</h2>
+            <div id="advanced-section" class="pb-8 border-t-2 border-gray-300 pt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex justify-between items-center cursor-pointer hover:text-indigo-600 transition-colors section-header-sticky" onclick="toggleSection('advanced')">
+                    <span>Advanced Details (CGC)</span>
+                    <svg id="advanced-chevron" class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </h2>
+                <div id="advanced-content" class="collapsible-content">
                 <div class="overflow-x-auto">
                     <table class="w-full table-fixed">
                         <thead>
@@ -460,6 +504,7 @@
                             <!-- CGC rows will be dynamically populated by JavaScript -->
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </div>
@@ -656,12 +701,6 @@
         const defectsDl = document.getElementById('defects-dl');
         const finalGradeEl = document.getElementById('final-grade');
         const finalGradeNoteEl = document.getElementById('final-grade-note');
-        const detailsDeductionsEl = document.getElementById('details-deductions');
-        const detailsDefectsEl = document.getElementById('details-defects');
-        const detailsCreasingEl = document.getElementById('details-creasing');
-        const detailsWearEl = document.getElementById('details-wear');
-        const detailsGlossEl = document.getElementById('details-gloss');
-        const detailsInteriorEl = document.getElementById('details-interior');
         const cheatsheetContainer = document.getElementById('cheatsheet-container');
         const messageBox = document.getElementById('message-box');
         const messageContent = document.getElementById('message-content');
@@ -1006,34 +1045,16 @@
             if (totalDeductions === 0) {
                 if(finalGradeEl) finalGradeEl.textContent = '10.0';
                 if(finalGradeNoteEl) finalGradeNoteEl.textContent = 'Gem Mint';
-                // Set initial values for grade details
-                const initialDetails = comicData.find(item => item.GRADE === 9.9);
-                if(detailsDeductionsEl) detailsDeductionsEl.textContent = initialDetails["POINT DEDUCTIONS"];
-                if(detailsDefectsEl) detailsDefectsEl.textContent = initialDetails.DEFECTS;
-                if(detailsCreasingEl) detailsCreasingEl.textContent = initialDetails.CREASING;
-                if(detailsWearEl) detailsWearEl.textContent = initialDetails.WEAR;
-                if(detailsGlossEl) detailsGlossEl.textContent = initialDetails.GLOSS;
-                if(detailsInteriorEl) detailsInteriorEl.textContent = initialDetails.INTERIOR;
             } else if (closestGradeItem) {
                 if(finalGradeEl) finalGradeEl.textContent = `${closestGradeItem.GRADE}`;
                 if(finalGradeNoteEl) finalGradeNoteEl.textContent = closestGradeItem.NOTES;
-                // Update details based on the new closest grade
-                if(detailsDeductionsEl) detailsDeductionsEl.textContent = closestGradeItem["POINT DEDUCTIONS"];
-                if(detailsDefectsEl) detailsDefectsEl.textContent = closestGradeItem.DEFECTS;
-                if(detailsCreasingEl) detailsCreasingEl.textContent = closestGradeItem.CREASING;
-                if(detailsWearEl) detailsWearEl.textContent = closestGradeItem.WEAR;
-                if(detailsGlossEl) detailsGlossEl.textContent = closestGradeItem.GLOSS;
-                if(detailsInteriorEl) detailsInteriorEl.textContent = closestGradeItem.INTERIOR;
             } else {
                 if(finalGradeEl) finalGradeEl.textContent = '--';
                 if(finalGradeNoteEl) finalGradeNoteEl.textContent = '';
-                if(detailsDeductionsEl) detailsDeductionsEl.textContent = '';
-                if(detailsDefectsEl) detailsDefectsEl.textContent = '';
-                if(detailsCreasingEl) detailsCreasingEl.textContent = '';
-                if(detailsWearEl) detailsWearEl.textContent = '';
-                if(detailsGlossEl) detailsGlossEl.textContent = '';
-                if(detailsInteriorEl) detailsInteriorEl.textContent = '';
             }
+
+            // Update the grade details panel
+            updateGradeDetails();
         }
 
         // Reset function
@@ -1066,6 +1087,7 @@
 
             // Recalculate the grade after resetting
             calculateGrade();
+            updateGradeDetails();
         }
 
         // Drawer functionality
@@ -1093,6 +1115,92 @@
           resetBtn.addEventListener('click', resetForm);
         }
 
+        // Function to toggle section collapse/expand
+        function toggleSection(sectionName) {
+            const content = document.getElementById(`${sectionName}-content`);
+            const chevron = document.getElementById(`${sectionName}-chevron`);
+
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                chevron.classList.remove('rotate-180');
+            } else {
+                content.classList.add('collapsed');
+                chevron.classList.add('rotate-180');
+                // Scroll to top of page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Function to update grade details with all user inputs
+        function updateGradeDetails() {
+            const gradeDetailsEl = document.getElementById('grade-details');
+            if (!gradeDetailsEl) return;
+
+            let detailsHTML = '<div class="space-y-2 text-sm">';
+
+            // Add overall grade info
+            detailsHTML += '<div class="mb-4 pb-4 border-b border-gray-300">';
+            detailsHTML += '<p class="text-lg font-bold text-gray-800 mb-2">Grade Summary</p>';
+            detailsHTML += `<p><strong>Final Grade:</strong> <span id="details-final-grade">${finalGradeEl ? finalGradeEl.textContent : '10.0'}</span> - <span id="details-final-note">${finalGradeNoteEl ? finalGradeNoteEl.textContent : 'Gem Mint'}</span></p>`;
+            detailsHTML += '</div>';
+
+            // Wear Assessment section
+            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Wear Assessment:</p>';
+            const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
+            wearSelections.forEach(radioEl => {
+                const area = radioEl.name.charAt(0).toUpperCase() + radioEl.name.slice(1);
+                const severity = radioEl.value;
+                if (severity !== 'Negligible') {
+                    detailsHTML += `<p class="ml-4"><strong>${area}:</strong> ${severity}</p>`;
+                }
+            });
+            detailsHTML += '</div>';
+
+            // Defects Assessment section
+            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Defects Assessment:</p>';
+            const defectSelections = document.querySelectorAll('#defects-dl select');
+            defectSelections.forEach(selectEl => {
+                const defectName = selectEl.name.replace('defects-', '').split('-').map(word =>
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                const selectedOption = selectEl.options[selectEl.selectedIndex];
+                const selectedText = selectedOption.text;
+                if (selectedText !== 'None') {
+                    detailsHTML += `<p class="ml-4"><strong>${defectName}:</strong> ${selectedText}</p>`;
+                }
+            });
+            detailsHTML += '</div>';
+
+            // Advanced Details section
+            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Advanced Details (CGC):</p>';
+            const cgcSelections = document.querySelectorAll('#cgc-form input[type="radio"]:checked');
+            const cgcResults = {};
+            cgcSelections.forEach(radioEl => {
+                const defectName = radioEl.name.replace('cgc-', '').split('-').map(word =>
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                const value = parseFloat(radioEl.value);
+
+                // Find which level was selected
+                const allRadios = document.querySelectorAll(`input[name="${radioEl.name}"]`);
+                let selectedLevel = 'Negligible';
+                allRadios.forEach((r, index) => {
+                    if (r.checked) {
+                        const levels = ["Negligible", "Tiny", "Minor", "Moderate", "Extensive", "Major"];
+                        selectedLevel = levels[index];
+                    }
+                });
+
+                if (selectedLevel !== 'Negligible') {
+                    detailsHTML += `<p class="ml-4"><strong>${defectName}:</strong> ${selectedLevel}</p>`;
+                }
+            });
+            detailsHTML += '</div>';
+
+            detailsHTML += '</div>';
+            gradeDetailsEl.innerHTML = detailsHTML;
+        }
+
         // Initial setup on page load
         document.addEventListener('DOMContentLoaded', () => {
             renderWearForm();
@@ -1101,6 +1209,7 @@
             renderCgcForm();
             // Initial call to set the grade to 10.0 on load
             calculateGrade();
+            updateGradeDetails();
         });
 
     </script>
