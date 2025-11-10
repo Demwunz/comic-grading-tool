@@ -273,9 +273,8 @@
 
         <!-- Grade Result Display and details aligned to the left -->
         <div id="grade-result-section" class="flex justify-start items-center gap-4 bg-white z-30">
-            <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 flex flex-col items-center justify-center text-center">
-                <div class="text-6xl font-extrabold text-white" id="grade-score">10.0</div>
-                <div class="text-sm font-medium text-indigo-100 mt-2" id="grade-note">Gem Mint</div>
+            <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 overflow-y-auto text-white p-4 text-sm">
+                <!-- User selections will be populated here dynamically -->
             </div>
             <div id="grade-details" class="flex-grow h-48 overflow-y-auto text-gray-700 p-6 rounded-xl details-panel">
                 <!-- User inputs will be populated here dynamically -->
@@ -1055,12 +1054,6 @@
                 currentGradeNote = '';
             }
 
-            // Update the result display
-            const gradeScoreEl = document.getElementById('grade-score');
-            const gradeNoteEl = document.getElementById('grade-note');
-            if (gradeScoreEl) gradeScoreEl.textContent = currentGrade;
-            if (gradeNoteEl) gradeNoteEl.textContent = currentGradeNote;
-
             // Update the grade details panel
             updateGradeDetails();
         }
@@ -1141,9 +1134,11 @@
 
         // Function to update grade details with all user inputs
         function updateGradeDetails() {
+            const resultDisplayEl = document.getElementById('result-display');
             const gradeDetailsEl = document.getElementById('grade-details');
-            if (!gradeDetailsEl) return;
+            if (!resultDisplayEl || !gradeDetailsEl) return;
 
+            let resultHTML = '<div class="space-y-2">';
             let detailsHTML = '<div class="space-y-2 text-sm">';
             let hasAnySelections = false;
 
@@ -1159,6 +1154,10 @@
                 }
             });
             if (wearItems.length > 0) {
+                resultHTML += '<div class="mb-3"><p class="font-bold mb-1">Wear Assessment:</p>';
+                resultHTML += wearItems.join('');
+                resultHTML += '</div>';
+
                 detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Wear Assessment:</p>';
                 detailsHTML += wearItems.join('');
                 detailsHTML += '</div>';
@@ -1179,6 +1178,10 @@
                 }
             });
             if (defectItems.length > 0) {
+                resultHTML += '<div class="mb-3"><p class="font-bold mb-1">Defects Assessment:</p>';
+                resultHTML += defectItems.join('');
+                resultHTML += '</div>';
+
                 detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Defects Assessment:</p>';
                 detailsHTML += defectItems.join('');
                 detailsHTML += '</div>';
@@ -1208,21 +1211,19 @@
                 }
             });
             if (cgcItems.length > 0) {
+                resultHTML += '<div class="mb-3"><p class="font-bold mb-1">Advanced Details (CGC):</p>';
+                resultHTML += cgcItems.join('');
+                resultHTML += '</div>';
+
                 detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Advanced Details (CGC):</p>';
                 detailsHTML += cgcItems.join('');
                 detailsHTML += '</div>';
             }
 
-            // Add Final Grade at the end if there are any selections
-            if (hasAnySelections) {
-                detailsHTML += '<div class="mt-4 pt-4 border-t border-gray-300">';
-                detailsHTML += '<p class="text-lg font-bold text-gray-800">Final Grade: <span class="text-purple-600">' +
-                    currentGrade + '</span></p>';
-                detailsHTML += '<p class="text-sm text-gray-600">' + currentGradeNote + '</p>';
-                detailsHTML += '</div>';
-            }
-
+            resultHTML += '</div>';
             detailsHTML += '</div>';
+
+            resultDisplayEl.innerHTML = resultHTML;
             gradeDetailsEl.innerHTML = detailsHTML;
         }
 
