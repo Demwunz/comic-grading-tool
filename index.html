@@ -274,7 +274,8 @@
         <!-- Grade Result Display and details aligned to the left -->
         <div id="grade-result-section" class="flex justify-start items-center gap-4 bg-white z-30">
             <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 flex flex-col items-center justify-center text-center">
-                <!-- Grade display removed - details now shown in grade-details panel -->
+                <div class="text-6xl font-extrabold text-white" id="grade-score">10.0</div>
+                <div class="text-sm font-medium text-indigo-100 mt-2" id="grade-note">Gem Mint</div>
             </div>
             <div id="grade-details" class="flex-grow h-48 overflow-y-auto text-gray-700 p-6 rounded-xl details-panel">
                 <!-- User inputs will be populated here dynamically -->
@@ -1053,6 +1054,12 @@
                 currentGrade = '--';
                 currentGradeNote = '';
             }
+
+            // Update the result display
+            const gradeScoreEl = document.getElementById('grade-score');
+            const gradeNoteEl = document.getElementById('grade-note');
+            if (gradeScoreEl) gradeScoreEl.textContent = currentGrade;
+            if (gradeNoteEl) gradeNoteEl.textContent = currentGradeNote;
 
             // Update the grade details panel
             updateGradeDetails();
