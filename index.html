@@ -274,10 +274,9 @@
         <!-- Grade Result Display and details aligned to the left -->
         <div id="grade-result-section" class="flex justify-start items-center gap-4 bg-white z-30">
             <div id="result-display" class="w-48 h-48 grade-display rounded-lg flex-shrink-0 flex flex-col items-center justify-center text-center">
-                <p id="final-grade" class="text-7xl font-extrabold text-white">10.0</p>
-                <p id="final-grade-note" class="text-white text-sm mt-2 font-semibold">Gem Mint</p>
+                <!-- Grade display removed - details now shown in grade-details panel -->
             </div>
-            <div id="grade-details" class="flex-grow text-gray-700 p-6 rounded-xl details-panel">
+            <div id="grade-details" class="flex-grow h-48 overflow-y-auto text-gray-700 p-6 rounded-xl details-panel">
                 <!-- User inputs will be populated here dynamically -->
             </div>
         </div>
@@ -696,11 +695,13 @@
             "Major": 2.0
         };
 
+        // Store current grade values
+        let currentGrade = '10.0';
+        let currentGradeNote = 'Gem Mint';
+
         // DOM elements
         const defectFormWear = document.getElementById('wear-form');
         const defectsDl = document.getElementById('defects-dl');
-        const finalGradeEl = document.getElementById('final-grade');
-        const finalGradeNoteEl = document.getElementById('final-grade-note');
         const cheatsheetContainer = document.getElementById('cheatsheet-container');
         const messageBox = document.getElementById('message-box');
         const messageContent = document.getElementById('message-content');
@@ -1041,16 +1042,16 @@
                 }
             });
 
-            // Display the final score and update details
+            // Update current grade values
             if (totalDeductions === 0) {
-                if(finalGradeEl) finalGradeEl.textContent = '10.0';
-                if(finalGradeNoteEl) finalGradeNoteEl.textContent = 'Gem Mint';
+                currentGrade = '10.0';
+                currentGradeNote = 'Gem Mint';
             } else if (closestGradeItem) {
-                if(finalGradeEl) finalGradeEl.textContent = `${closestGradeItem.GRADE}`;
-                if(finalGradeNoteEl) finalGradeNoteEl.textContent = closestGradeItem.NOTES;
+                currentGrade = `${closestGradeItem.GRADE}`;
+                currentGradeNote = closestGradeItem.NOTES;
             } else {
-                if(finalGradeEl) finalGradeEl.textContent = '--';
-                if(finalGradeNoteEl) finalGradeNoteEl.textContent = '';
+                currentGrade = '--';
+                currentGradeNote = '';
             }
 
             // Update the grade details panel
@@ -1137,27 +1138,27 @@
             if (!gradeDetailsEl) return;
 
             let detailsHTML = '<div class="space-y-2 text-sm">';
+            let hasAnySelections = false;
 
-            // Add overall grade info
-            detailsHTML += '<div class="mb-4 pb-4 border-b border-gray-300">';
-            detailsHTML += '<p class="text-lg font-bold text-gray-800 mb-2">Grade Summary</p>';
-            detailsHTML += `<p><strong>Final Grade:</strong> <span id="details-final-grade">${finalGradeEl ? finalGradeEl.textContent : '10.0'}</span> - <span id="details-final-note">${finalGradeNoteEl ? finalGradeNoteEl.textContent : 'Gem Mint'}</span></p>`;
-            detailsHTML += '</div>';
-
-            // Wear Assessment section
-            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Wear Assessment:</p>';
+            // Wear Assessment section - only show if there are non-negligible selections
+            const wearItems = [];
             const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
             wearSelections.forEach(radioEl => {
                 const area = radioEl.name.charAt(0).toUpperCase() + radioEl.name.slice(1);
                 const severity = radioEl.value;
                 if (severity !== 'Negligible') {
-                    detailsHTML += `<p class="ml-4"><strong>${area}:</strong> ${severity}</p>`;
+                    wearItems.push(`<p class="ml-4"><strong>${area}:</strong> ${severity}</p>`);
+                    hasAnySelections = true;
                 }
             });
-            detailsHTML += '</div>';
+            if (wearItems.length > 0) {
+                detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Wear Assessment:</p>';
+                detailsHTML += wearItems.join('');
+                detailsHTML += '</div>';
+            }
 
-            // Defects Assessment section
-            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Defects Assessment:</p>';
+            // Defects Assessment section - only show if there are actual selections
+            const defectItems = [];
             const defectSelections = document.querySelectorAll('#defects-dl select');
             defectSelections.forEach(selectEl => {
                 const defectName = selectEl.name.replace('defects-', '').split('-').map(word =>
@@ -1165,21 +1166,24 @@
                 ).join(' ');
                 const selectedOption = selectEl.options[selectEl.selectedIndex];
                 const selectedText = selectedOption.text;
-                if (selectedText !== 'None') {
-                    detailsHTML += `<p class="ml-4"><strong>${defectName}:</strong> ${selectedText}</p>`;
+                if (selectedText && selectedText !== 'None') {
+                    defectItems.push(`<p class="ml-4"><strong>${defectName}:</strong> ${selectedText}</p>`);
+                    hasAnySelections = true;
                 }
             });
-            detailsHTML += '</div>';
+            if (defectItems.length > 0) {
+                detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Defects Assessment:</p>';
+                detailsHTML += defectItems.join('');
+                detailsHTML += '</div>';
+            }
 
-            // Advanced Details section
-            detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Advanced Details (CGC):</p>';
+            // Advanced Details section - only show if there are non-negligible selections
+            const cgcItems = [];
             const cgcSelections = document.querySelectorAll('#cgc-form input[type="radio"]:checked');
-            const cgcResults = {};
             cgcSelections.forEach(radioEl => {
                 const defectName = radioEl.name.replace('cgc-', '').split('-').map(word =>
                     word.charAt(0).toUpperCase() + word.slice(1)
                 ).join(' ');
-                const value = parseFloat(radioEl.value);
 
                 // Find which level was selected
                 const allRadios = document.querySelectorAll(`input[name="${radioEl.name}"]`);
@@ -1192,10 +1196,24 @@
                 });
 
                 if (selectedLevel !== 'Negligible') {
-                    detailsHTML += `<p class="ml-4"><strong>${defectName}:</strong> ${selectedLevel}</p>`;
+                    cgcItems.push(`<p class="ml-4"><strong>${defectName}:</strong> ${selectedLevel}</p>`);
+                    hasAnySelections = true;
                 }
             });
-            detailsHTML += '</div>';
+            if (cgcItems.length > 0) {
+                detailsHTML += '<div class="mb-3"><p class="font-bold text-gray-800 mb-1">Advanced Details (CGC):</p>';
+                detailsHTML += cgcItems.join('');
+                detailsHTML += '</div>';
+            }
+
+            // Add Final Grade at the end if there are any selections
+            if (hasAnySelections) {
+                detailsHTML += '<div class="mt-4 pt-4 border-t border-gray-300">';
+                detailsHTML += '<p class="text-lg font-bold text-gray-800">Final Grade: <span class="text-purple-600">' +
+                    currentGrade + '</span></p>';
+                detailsHTML += '<p class="text-sm text-gray-600">' + currentGradeNote + '</p>';
+                detailsHTML += '</div>';
+            }
 
             detailsHTML += '</div>';
             gradeDetailsEl.innerHTML = detailsHTML;
