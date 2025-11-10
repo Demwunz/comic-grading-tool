@@ -172,15 +172,51 @@
     <!-- Cheatsheet Drawer Container -->
     <div id="cheatsheet-drawer" class="fixed top-0 left-0 w-80 h-full drawer-panel shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold text-gray-800">Raw Comic Grading Cheatsheet</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Grading Reference</h2>
             <button id="close-drawer-btn" class="text-gray-500 hover:text-indigo-600 focus:outline-none transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        <div id="cheatsheet-container" class="space-y-4">
-            <!-- Cheatsheet content will be dynamically populated -->
+
+        <!-- Severity Level Descriptions -->
+        <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Severity Levels</h3>
+            <div class="space-y-3">
+                <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-800">Negligible</h4>
+                    <p class="text-sm text-gray-700">Can only be seen with magnification.</p>
+                </div>
+                <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-800">Tiny</h4>
+                    <p class="text-sm text-gray-700">Can barely be seen but is obvious with magnification.</p>
+                </div>
+                <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-800">Minor</h4>
+                    <p class="text-sm text-gray-700">Obvious but very minor and does not significantly detract from the appeal.</p>
+                </div>
+                <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-800">Moderate</h4>
+                    <p class="text-sm text-gray-700">Obvious and detracts from the presentation/appeal of the book.</p>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-800">Extensive</h4>
+                    <p class="text-sm text-gray-700">Damage too bad to be considered moderate but not bad enough to be major.</p>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-800">Major</h4>
+                    <p class="text-sm text-gray-700">Unsightly and significantly impacts the presentation/appeal/readability.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grade Scale Reference -->
+        <div>
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Grade Scale</h3>
+            <div id="cheatsheet-container" class="space-y-4">
+                <!-- Cheatsheet content will be dynamically populated -->
+            </div>
         </div>
     </div>
 
@@ -224,44 +260,22 @@
         
         <!-- Grading Input Form -->
         <div class="form-panel p-6 rounded-xl border border-gray-200">
-            <div class="flex border-b border-gray-300">
-                <button id="tab-wear" class="py-3 px-6 font-semibold text-indigo-600 border-b-2 border-indigo-600 focus:outline-none tab-button rounded-t-lg">Wear</button>
-                <button id="tab-defects" class="py-3 px-6 font-semibold text-gray-500 focus:outline-none tab-button rounded-t-lg">Defects</button>
-                <button id="tab-advanced" class="py-3 px-6 font-semibold text-gray-500 focus:outline-none tab-button rounded-t-lg">Advanced</button>
-            </div>
-            
-            <!-- Wear Tab Content -->
-            <div id="wear-content" class="pt-4">
+
+            <!-- Wear Section -->
+            <div id="wear-content" class="pb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Wear Assessment</h2>
                 <hr class="my-4 border-gray-300" />
                 <div class="overflow-x-auto">
                     <table class="w-full table-fixed">
                         <thead>
                             <tr>
                                 <th class="px-3 py-3 text-left text-gray-700 font-bold w-1/4 bg-gray-100">Area</th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Negligible
-                                    <span class="tooltip-text">Can only be seen with magnification.</span>
-                                </th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Tiny
-                                    <span class="tooltip-text">Can barely be seen but is obvious with magnification.</span>
-                                </th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Minor
-                                    <span class="tooltip-text">Obvious but very minor and does not significantly detract from the appeal.</span>
-                                </th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Moderate
-                                    <span class="tooltip-text">Obvious and detracts from the presentation/appeal of the book.</span>
-                                </th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Extensive
-                                    <span class="tooltip-text">Damage too bad to be considered moderate but not bad enough to be major.</span>
-                                </th>
-                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100 tooltip-container">
-                                    Major
-                                    <span class="tooltip-text">Unsightly and significantly impacts the presentation/appeal/readability.</span>
-                                </th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Negligible</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Tiny</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Minor</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Moderate</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Extensive</th>
+                                <th class="px-3 py-3 text-center text-gray-700 font-bold w-1/4 bg-gray-100">Major</th>
                             </tr>
                         </thead>
                         <tbody id="wear-form">
@@ -271,8 +285,9 @@
                 </div>
             </div>
 
-            <!-- Defects Tab Content (initially hidden) -->
-            <div id="defects-content" class="hidden pt-4">
+            <!-- Defects Section -->
+            <div id="defects-content" class="pb-8 border-t-2 border-gray-300 pt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Defects Assessment</h2>
                  <div class="overflow-x-auto">
                     <dl id="defects-dl" class="space-y-1">
                         <!-- Definition list items for each defect category -->
@@ -424,9 +439,10 @@
                     </dl>
                 </div>
             </div>
-            
-            <!-- Advanced Tab Content (initially hidden) -->
-            <div id="advanced-content" class="hidden pt-4">
+
+            <!-- Advanced Section -->
+            <div id="advanced-content" class="pb-8 border-t-2 border-gray-300 pt-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Advanced Details (CGC)</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full table-fixed">
                         <thead>
@@ -657,13 +673,6 @@
         const resetBtn = document.getElementById('reset-btn');
 
 
-        // Tab elements
-        const tabWear = document.getElementById('tab-wear');
-        const tabDefects = document.getElementById('tab-defects');
-        const tabAdvanced = document.getElementById('tab-advanced');
-        const wearContent = document.getElementById('wear-content');
-        const defectsContent = document.getElementById('defects-content');
-        const advancedContent = document.getElementById('advanced-content');
 
 
         // Function to display a message box
@@ -953,31 +962,24 @@
         // Function to calculate the final grade and update details
         function calculateGrade() {
             let totalDeductions = 0;
-            let currentTab = 'wear';
-            if (wearContent && !wearContent.classList.contains('hidden')) {
-                currentTab = 'wear';
-            } else if (defectsContent && !defectsContent.classList.contains('hidden')) {
-                currentTab = 'defects';
-            } else if (advancedContent && !advancedContent.classList.contains('hidden')) {
-                currentTab = 'advanced';
-            }
 
-            if (currentTab === 'wear') {
-                const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
-                wearSelections.forEach(radioEl => {
-                    totalDeductions += defectLevels[radioEl.value];
-                });
-            } else if (currentTab === 'defects') {
-                const defectSelections = document.querySelectorAll('#defects-dl select');
-                defectSelections.forEach(selectEl => {
-                    totalDeductions += parseFloat(selectEl.value);
-                });
-            } else if (currentTab === 'advanced') {
-                const cgcSelections = document.querySelectorAll('#cgc-form input[type="radio"]:checked');
-                cgcSelections.forEach(radioEl => {
-                    totalDeductions += parseFloat(radioEl.value);
-                });
-            }
+            // Calculate deductions from Wear section
+            const wearSelections = document.querySelectorAll('#wear-form input[type="radio"]:checked');
+            wearSelections.forEach(radioEl => {
+                totalDeductions += defectLevels[radioEl.value];
+            });
+
+            // Calculate deductions from Defects section
+            const defectSelections = document.querySelectorAll('#defects-dl select');
+            defectSelections.forEach(selectEl => {
+                totalDeductions += parseFloat(selectEl.value);
+            });
+
+            // Calculate deductions from Advanced section
+            const cgcSelections = document.querySelectorAll('#cgc-form input[type="radio"]:checked');
+            cgcSelections.forEach(radioEl => {
+                totalDeductions += parseFloat(radioEl.value);
+            });
 
             // Start with a perfect score (10.0) and subtract points
             let finalScore = 10.0 - totalDeductions;
@@ -1066,59 +1068,6 @@
             calculateGrade();
         }
 
-        // Tab functionality
-        tabWear.addEventListener('click', () => {
-            tabWear.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            if (tabDefects) {
-                tabDefects.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                tabDefects.classList.add('text-gray-500');
-            }
-            if (tabAdvanced) {
-                tabAdvanced.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                tabAdvanced.classList.add('text-gray-500');
-            }
-            if (wearContent) wearContent.classList.remove('hidden');
-            if (defectsContent) defectsContent.classList.add('hidden');
-            if (advancedContent) advancedContent.classList.add('hidden');
-            calculateGrade();
-        });
-
-        tabDefects.addEventListener('click', () => {
-            if (tabDefects) {
-                tabDefects.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
-            }
-            if (tabWear) {
-                tabWear.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                tabWear.classList.add('text-gray-500');
-            }
-            if (tabAdvanced) {
-                tabAdvanced.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                tabAdvanced.classList.add('text-gray-500');
-            }
-            if (defectsContent) defectsContent.classList.remove('hidden');
-            if (wearContent) wearContent.classList.add('hidden');
-            if (advancedContent) advancedContent.classList.add('hidden');
-            calculateGrade();
-        });
-        
-        if(tabAdvanced) {
-            tabAdvanced.addEventListener('click', () => {
-                tabAdvanced.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                if (tabWear) {
-                    tabWear.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                    tabWear.classList.add('text-gray-500');
-                }
-                if (tabDefects) {
-                    tabDefects.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
-                    tabDefects.classList.add('text-gray-500');
-                }
-                if (advancedContent) advancedContent.classList.remove('hidden');
-                if (wearContent) wearContent.classList.add('hidden');
-                if (defectsContent) defectsContent.classList.add('hidden');
-                calculateGrade();
-            });
-        }
-        
         // Drawer functionality
         openDrawerBtn.addEventListener('click', () => {
             cheatsheetDrawer.classList.remove('-translate-x-full');
